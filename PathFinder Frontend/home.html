@@ -28,6 +28,7 @@
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
+            outline: none;
         }
         .add-btn {
             padding: 10px 20px;
@@ -60,7 +61,7 @@
         }
     </style>
 </head>
-<body>
+<body onload="loadTasks()">
 
 <header class="navbar">
     <div class="logo">
@@ -106,18 +107,38 @@
         window.location.href = "role.html";
     }
 
+    function loadTasks() {
+        const tasks = JSON.parse(localStorage.getItem("pathfinder_tasks")) || [];
+        tasks.forEach(task => renderTask(task));
+    }
+
+    function renderTask(taskText) {
+        const ul = document.getElementById("todoList");
+        const li = document.createElement("li");
+        li.innerHTML = `
+            <span>${taskText}</span>
+            <button class="delete-btn" onclick="deleteTask(this, '${taskText}')">Delete</button>
+        `;
+        ul.appendChild(li);
+    }
+
     function addTask() {
         const input = document.getElementById("todoInput");
-        const ul = document.getElementById("todoList");
-        if (input.value.trim() !== "") {
-            const li = document.createElement("li");
-            li.innerHTML = `
-                <span>${input.value}</span>
-                <button class="delete-btn" onclick="this.parentElement.remove()">Delete</button>
-            `;
-            ul.appendChild(li);
+        const text = input.value.trim();
+        if (text !== "") {
+            renderTask(text);
+            const tasks = JSON.parse(localStorage.getItem("pathfinder_tasks")) || [];
+            tasks.push(text);
+            localStorage.setItem("pathfinder_tasks", JSON.stringify(tasks));
             input.value = "";
         }
+    }
+
+    function deleteTask(btn, text) {
+        btn.parentElement.remove();
+        let tasks = JSON.parse(localStorage.getItem("pathfinder_tasks")) || [];
+        tasks = tasks.filter(t => t !== text);
+        localStorage.setItem("pathfinder_tasks", JSON.stringify(tasks));
     }
 </script>
 
