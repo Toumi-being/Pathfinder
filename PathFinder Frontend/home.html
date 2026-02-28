@@ -4,26 +4,78 @@
     <meta charset="UTF-8">
     <title>PATHFINDER | Home</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .todo-section {
+            padding: 50px 20px;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+        .todo-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .todo-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        #todoInput {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .add-btn {
+            padding: 10px 20px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #todoList {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+        #todoList li {
+            background: #fff;
+            border-bottom: 1px solid #eee;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .delete-btn {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
-<!-- Navbar -->
 <header class="navbar">
     <div class="logo">
         <img src="logo.png" alt="">
         <span>PATHFINDER</span>
     </div>
     <nav>
-<div class="navbar-btn">
-    <a href="home.html" class="home-btn">Home</a>
-    <a href="about.html" class="about-btn">About</a>
-    <a href="login.html" class="login-btn">Login</a>
-</div>
-  </nav>
-
+        <div class="navbar-btn">
+            <a href="home.html" class="home-btn">Home</a>
+            <a href="about.html" class="about-btn">About</a>
+            <a href="login.html" class="login-btn">Login</a>
+        </div>
+    </nav>
 </header>
 
-<!-- Hero Section -->
 <section class="hero">
     <div class="overlay">
         <div class="hero-content">
@@ -34,16 +86,40 @@
                 based on their skills, interests, and academic strengths.
             </p>
             <button class="hero-btn" onclick="goToRole()">Get Started</button>
-
-<script>
-function goToRole() {
-    window.location.href = "role.html";
-}
-</script>
-
         </div>
     </div>
 </section>
+
+<section class="todo-section">
+    <div class="todo-container">
+        <h2>Career Roadmap To-Do List</h2>
+        <div class="todo-input-group">
+            <input type="text" id="todoInput" placeholder="Enter task...">
+            <button class="add-btn" onclick="addTask()">Add Task</button>
+        </div>
+        <ul id="todoList"></ul>
+    </div>
+</section>
+
+<script>
+    function goToRole() {
+        window.location.href = "role.html";
+    }
+
+    function addTask() {
+        const input = document.getElementById("todoInput");
+        const ul = document.getElementById("todoList");
+        if (input.value.trim() !== "") {
+            const li = document.createElement("li");
+            li.innerHTML = `
+                <span>${input.value}</span>
+                <button class="delete-btn" onclick="this.parentElement.remove()">Delete</button>
+            `;
+            ul.appendChild(li);
+            input.value = "";
+        }
+    }
+</script>
 
 </body>
 </html>
