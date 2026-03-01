@@ -42,50 +42,28 @@ function toggleDropdown(){
     dropdown.style.display = dropdown.style.display==="block" ? "none" : "block";
 }
 
-/* --- TO-DO LIST FUNCTIONS (JUST ADDED) --- */
+/* ========================================= */
+/* TO-DO TRACKER LOGIC (NEW ADDITION ONLY)  */
+/* ========================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
-    const tasks = JSON.parse(localStorage.getItem("pathfinder_tasks")) || [];
-    tasks.forEach(taskText => {
-        renderTask(taskText);
-    });
-});
-
-function addTask() {
+function addTodo() {
     const input = document.getElementById("todoInput");
-    const taskText = input.value.trim();
+    const list = document.getElementById("todoList");
 
-    if (taskText === "") {
-        alert("Please enter a task!");
+    if (input.value.trim() === "") {
+        alert("Please enter a goal!");
         return;
     }
 
-    renderTask(taskText);
-    saveTaskToLocal(taskText);
-    input.value = "";
-}
-
-function renderTask(taskText) {
-    const ul = document.getElementById("todoList");
-    if (!ul) return;
-
     const li = document.createElement("li");
+    li.className = "todo-item"; // style.css theke design pabe
+    
+    // Original design maintain kore delete icon shoho goal add kora
     li.innerHTML = `
-        <span>${taskText}</span>
-        <button class="delete-btn" onclick="deleteTask(this, '${taskText}')">Delete</button>
+        <span>${input.value}</span>
+        <i class="fa fa-trash todo-delete" style="color:#ff4d4d; cursor:pointer;" onclick="this.parentElement.remove()"></i>
     `;
-    ul.appendChild(li);
-}
-
-function saveTaskToLocal(taskText) {
-    let tasks = JSON.parse(localStorage.getItem("pathfinder_tasks")) || [];
-    tasks.push(taskText);
-    localStorage.setItem("pathfinder_tasks", JSON.stringify(tasks));
-}
-
-function deleteTask(button, taskText) {
-    button.parentElement.remove();
-    let tasks = JSON.parse(localStorage.getItem("pathfinder_tasks")) || [];
-    tasks = tasks.filter(t => t !== taskText);
-    localStorage.setItem("pathfinder_tasks", JSON.stringify(tasks));
+    
+    list.appendChild(li);
+    input.value = "";
 }

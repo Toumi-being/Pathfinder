@@ -4,64 +4,9 @@
     <meta charset="UTF-8">
     <title>PATHFINDER | Home</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        .todo-section {
-            padding: 50px 20px;
-            background-color: #f9f9f9;
-            text-align: center;
-        }
-        .todo-container {
-            max-width: 500px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .todo-input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        #todoInput {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            outline: none;
-        }
-        .add-btn {
-            padding: 10px 20px;
-            background-color: #2ecc71;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        #todoList {
-            list-style: none;
-            padding: 0;
-            text-align: left;
-        }
-        #todoList li {
-            background: #fff;
-            border-bottom: 1px solid #eee;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .delete-btn {
-            background: #ff4d4d;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body onload="loadTasks()">
+<body>
 
 <header class="navbar">
     <div class="logo">
@@ -87,60 +32,51 @@
                 based on their skills, interests, and academic strengths.
             </p>
             <button class="hero-btn" onclick="goToRole()">Get Started</button>
-        </div>
-    </div>
-</section>
 
-<section class="todo-section">
-    <div class="todo-container">
-        <h2>Career Roadmap To-Do List</h2>
-        <div class="todo-input-group">
-            <input type="text" id="todoInput" placeholder="Enter task...">
-            <button class="add-btn" onclick="addTask()">Add Task</button>
-        </div>
-        <ul id="todoList"></ul>
-    </div>
-</section>
+            <div class="post-box" style="margin-top: 30px; flex-direction: column; align-items: flex-start; gap: 10px; width: 100%;">
+                <strong style="color: #1e293b; font-size: 16px;">Career Goals Tracker</strong>
+                <div style="display: flex; width: 100%; gap: 10px;">
+                    <input type="text" id="todoInput" placeholder="Add a new goal..." style="flex:1; height: 40px; border-radius: 8px; border: 1px solid #ddd; padding: 0 10px;">
+                    <button onclick="addTodo()" style="height: 40px; background: #2e7d32; color: white; border: none; padding: 0 20px; border-radius: 8px; cursor: pointer; font-weight: bold;">Add</button>
+                </div>
+                <ul id="todoList" style="width: 100%; list-style: none; padding: 0; margin-top: 10px;">
+                    </ul>
+            </div>
+            <script>
+function goToRole() {
+    window.location.href = "role.html";
+}
 
-<script>
-    function goToRole() {
-        window.location.href = "role.html";
+// To-Do Logic
+function addTodo() {
+    const input = document.getElementById("todoInput");
+    const list = document.getElementById("todoList");
+
+    if (input.value.trim() === "") {
+        alert("Please enter a goal!");
+        return;
     }
 
-    function loadTasks() {
-        const tasks = JSON.parse(localStorage.getItem("pathfinder_tasks")) || [];
-        tasks.forEach(task => renderTask(task));
-    }
-
-    function renderTask(taskText) {
-        const ul = document.getElementById("todoList");
-        const li = document.createElement("li");
-        li.innerHTML = `
-            <span>${taskText}</span>
-            <button class="delete-btn" onclick="deleteTask(this, '${taskText}')">Delete</button>
-        `;
-        ul.appendChild(li);
-    }
-
-    function addTask() {
-        const input = document.getElementById("todoInput");
-        const text = input.value.trim();
-        if (text !== "") {
-            renderTask(text);
-            const tasks = JSON.parse(localStorage.getItem("pathfinder_tasks")) || [];
-            tasks.push(text);
-            localStorage.setItem("pathfinder_tasks", JSON.stringify(tasks));
-            input.value = "";
-        }
-    }
-
-    function deleteTask(btn, text) {
-        btn.parentElement.remove();
-        let tasks = JSON.parse(localStorage.getItem("pathfinder_tasks")) || [];
-        tasks = tasks.filter(t => t !== text);
-        localStorage.setItem("pathfinder_tasks", JSON.stringify(tasks));
-    }
+    const li = document.createElement("li");
+    li.className = "todo-item"; // CSS class from your style.css
+    li.style.display = "flex";
+    li.style.justifyContent = "space-between";
+    li.style.padding = "10px 0";
+    li.style.borderBottom = "1px solid rgba(0,0,0,0.1)";
+    
+    li.innerHTML = `
+        <span style="color: #333;">${input.value}</span>
+        <i class="fa fa-trash todo-delete" style="color:#ff4d4d; cursor:pointer;" onclick="this.parentElement.remove()"></i>
+    `;
+    
+    list.appendChild(li);
+    input.value = "";
+}
 </script>
+
+        </div>
+    </div>
+</section>
 
 </body>
 </html>
